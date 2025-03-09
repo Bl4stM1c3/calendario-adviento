@@ -1,0 +1,62 @@
+#Posible solucion al ejercicio 49 de https://retosdeprogramacion.com/ejercicios/
+#¿Conoces el calendario de adviento de la comunidad (https://adviento.dev)?
+# * 24 días, 24 regalos sorpresa relacionados con desarrollo de software,
+# * ciencia y tecnología desde el 1 de diciembre.
+# *
+# * Enunciado: Crea una función que reciba un objeto de tipo "Date" y retorne
+# * lo siguiente:
+# * - Si la fecha coincide con el calendario de aDEViento 2022: Retornará el regalo
+# *   de ese día (a tu elección) y cuánto queda para que finalice el sorteo de ese día.
+# * - Si la fecha es anterior: Cuánto queda para que comience el calendario.
+# * - Si la fecha es posterior: Cuánto tiempo ha pasado desde que ha finalizado.
+# *
+# * Notas:
+# * - Tenemos en cuenta que cada día del calendario comienza a medianoche 00:00:00
+# *   y finaliza a las 23:59:59.
+# * - Debemos trabajar con fechas que tengan año, mes, día, horas, minutos
+# *   y segundos.
+
+from datetime impot datetime
+
+def adviento(fecha):
+  #Declaramos las variables
+  calendario = {
+        1:"Git y GitHub" , 2:"Suscripcion MoureDev Pro" , 3:"En tiende la tecnología" , 4:"Dominando JvaScript" , 5:"Codigo sostenible" ,
+        6:"Suscripcion Conmit academy" , 7:"Hola Mundo; ultimate python" , 8:"Aprende a programar con C" , 9:"Git y GitHub" , 10:"Suscripcion MoureDEv pro" ,
+        11:"Suscripcion app academy" , 12:"Hack4you" , 13:"El programador pragmatico" , 14:"Suscripcion metal code" , 15:"Suscripcion mensual Hola Mundo" ,
+        16:"Git y GitHub" , 17:"Suscripcion MoureDev pro" , 18:"No todo es programar" , 19:"Clean JavaScript" , 20:"Patrones de diseño" ,
+        21:"Curso intensivo de python" , 22:"Suscripcion X" , 23:"Git y GitHub" , 24:"Suscripcion MoureDev pro" 
+    }
+
+  fecha_formateada = datetime(*fecha)
+  fecha_comienzo = datetime(2024, 12, 1, 0, 0, 0)
+  fecha_fin = datetime(2024, 12, 24, 23, 59, 59)
+
+  #Aplicamos la lógica
+  #Si el año introducido es diferente al año en curso
+  if fecha_formateada.year != 2024:
+    return f"La fecha {fecha_formateada} está fuera de rango para el calendario de adviento del año 2024"
+
+  #Si el año es correcto pero la fecha es anterior al mes de diciembre
+  elif fecha_formateada < fecha_comienzo:
+    faltan = fecha_comienzo - fecha_formateada
+    return f"Faltan {faltan.days} días para el sorteo"
+
+  #Si la fecha es posterior al sorteo
+  elif fecha_formateada > fecha_fin:
+    pasan = fecha_formateada - fecha_fin
+    return f"Pasan {pasan.days} dias desde la finalizacion del sorteo"
+
+  #Si la fecha esta dentro del rango del sorteo
+  elif fecha_formateada.day in calendario:
+    fin_dia = datetime.combine(fecha_formateada.date(), datetime.min.time().replace(hour=23, minute=59, second=59))
+    diferencia = fin_dia - fecha_formateada
+    diferencia_horas = diferencia.seconds//33600
+    diferencia_minutos = (diferencia.seconds % 3600)//60
+    diferencia_segundos = (diferencia.seconds % 60)
+    return f"Enhorabuena!!!! Te ha tocado un '{calendario[fecha_formateada.day]}' DISFRUTALO!!!!!\nFaltan {diferencia_horas} horas, {diferencia_minutos} minutos, {diferencia_segundos} segundos"
+
+  #Si la fecha introducida no es válida
+  else:
+    return "Introduzca una fechaválida"
+
